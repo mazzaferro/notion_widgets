@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cota e potencial de valorização — Junho 2026</title>
+<style>
+*{box-sizing:border-box}body{margin:0;padding:16px;background:#fff;color:#262626;font:14px/1.5 Arial,sans-serif}h2{font-size:19px;margin:0 0 4px}p{margin:6px 0}.muted{font-size:12px;color:#666}.legend{display:flex;flex-wrap:wrap;gap:10px 20px;margin:16px 0 8px;font-size:13px;font-weight:600}.key{display:inline-block;width:12px;height:12px;background:var(--color);vertical-align:-1px;margin-right:6px}.linekey{display:inline-block;width:22px;border-top:2px solid #f1c232;vertical-align:4px;margin-right:6px}.controls{margin:12px 0;font-size:13px}input{accent-color:#262626}#chart svg{display:block;width:100%;height:360px}#tip{font-size:13px;background:#f7f7f7;padding:10px 12px;min-height:62px;margin-top:6px}details{margin:12px 0;font-size:12px}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%}th,td{padding:5px 8px;text-align:right;white-space:nowrap;border-bottom:1px solid #eee}th:first-child,td:first-child{text-align:left}[tabindex]:focus-visible{outline:2px solid #555;outline-offset:1px}.hit{fill:transparent;cursor:pointer;pointer-events:all}@media(max-width:500px){body{padding:10px}h2{font-size:18px}.legend{gap:8px 14px}}
+/* Fit the chart to the Notion embed; keep controls and notes visible. */
+html{height:100%}body{height:100vh;min-height:640px;display:flex;flex-direction:column;padding:12px}
+h2,p,.legend,.controls,#tip,details{flex-shrink:0}
+#chart{flex:1;min-height:180px}#chart svg{height:100%;width:100%}
+.legend{margin:10px 0 6px}.controls{margin:6px 0}
+#tip{min-height:62px}details{margin:8px 0}
+.tablewrap{max-height:170px;overflow:auto}details[open]{max-height:200px;overflow:auto}
+@media(max-width:500px){body{padding:10px}h2{font-size:17px}.legend{font-size:12px;gap:6px 12px}#tip{font-size:12px;padding:8px}.muted{font-size:11px}#note{line-height:1.4}}
+</style>
+<h2>Cota e potencial de valorização — Junho 2026</h2>
+<p class="muted" id="sub"></p>
+<div class="legend" id="legend"></div>
+<label class="controls"><input id="recent" type="checkbox"> Mostrar apenas os últimos 12 meses</label>
+<div id="chart"></div>
+<div id="tip" role="status" aria-live="polite"></div>
+<details><summary>Ver os valores do gráfico</summary><div class="tablewrap" id="values"></div></details>
+<p class="muted" id="note"></p>
+<script>
+const DATA={"date": "2026-06-30", "history": [{"date": "2023-07-31", "cota": 1.05354884, "potencial": 0.401, "valor_estimado": 1.476021925, "risco": 1.64, "caixa": 0.198, "row": 4}, {"date": "2023-08-31", "cota": 1.06524931, "potencial": 0.442, "valor_estimado": 1.536089505, "risco": 1.63, "caixa": 0.133, "row": 5}, {"date": "2023-09-30", "cota": 1.06671911, "potencial": 0.46, "valor_estimado": 1.557409901, "risco": 1.55, "caixa": 0.163, "row": 6}, {"date": "2023-10-31", "cota": 0.98860471, "potencial": 0.651, "valor_estimado": 1.632186376, "risco": 1.61, "caixa": 0.117, "row": 7}, {"date": "2023-11-30", "cota": 1.05062653, "potencial": 0.557, "valor_estimado": 1.635825507, "risco": 1.64, "caixa": 0.105, "row": 8}, {"date": "2023-12-31", "cota": 1.08279248, "potencial": 0.552, "valor_estimado": 1.680493929, "risco": 1.75, "caixa": 0.09, "row": 9}, {"date": "2024-01-31", "cota": 0.99413079, "potencial": 0.78, "valor_estimado": 1.769552806, "risco": 1.86, "caixa": 0.059, "row": 10}, {"date": "2024-02-29", "cota": 1.01580335, "potencial": 0.73, "valor_estimado": 1.757339796, "risco": 1.83, "caixa": 0.045, "row": 11}, {"date": "2024-03-31", "cota": 1.04495209, "potencial": 0.65, "valor_estimado": 1.724170949, "risco": 1.8, "caixa": 0.115, "row": 12}, {"date": "2024-04-30", "cota": 0.96131996, "potencial": 0.808, "valor_estimado": 1.738066488, "risco": 1.85, "caixa": 0.135, "row": 13}, {"date": "2024-05-31", "cota": 0.95147306, "potencial": 0.859, "valor_estimado": 1.768788419, "risco": 1.9, "caixa": 0.071, "row": 14}, {"date": "2024-06-30", "cota": 0.97161128, "potencial": 0.89, "valor_estimado": 1.836345319, "risco": 1.91, "caixa": 0.089, "row": 15}, {"date": "2024-07-31", "cota": 1.0243056, "potencial": 0.738, "valor_estimado": 1.780243133, "risco": 1.85, "caixa": 0.151, "row": 16}, {"date": "2024-08-31", "cota": 1.01376069, "potencial": 0.864, "valor_estimado": 1.889649926, "risco": 1.96, "caixa": 0.063, "row": 17}, {"date": "2024-09-30", "cota": 0.964754, "potencial": 1.001, "valor_estimado": 1.930472754, "risco": 1.95, "caixa": 0.069, "row": 18}, {"date": "2024-10-31", "cota": 0.95127552, "potencial": 1.029, "valor_estimado": 1.93013803, "risco": 1.84, "caixa": 0.045, "row": 19}, {"date": "2024-11-30", "cota": 0.91807441, "potencial": 1.098, "valor_estimado": 1.926120112, "risco": 1.84, "caixa": 0.017, "row": 20}, {"date": "2024-12-31", "cota": 0.8751791, "potencial": 1.237, "valor_estimado": 1.957775647, "risco": 1.82, "caixa": 0.01, "row": 21}, {"date": "2025-01-31", "cota": 0.88741655, "potencial": 1.204, "valor_estimado": 1.955866076, "risco": 1.76, "caixa": 0.015, "row": 22}, {"date": "2025-02-28", "cota": 0.82126535, "potencial": 1.4, "valor_estimado": 1.97103684, "risco": 1.73, "caixa": 0.011, "row": 23}, {"date": "2025-03-31", "cota": 0.84126707, "potencial": 1.23, "valor_estimado": 1.876025566, "risco": 1.7, "caixa": 0.048, "row": 24}, {"date": "2025-04-30", "cota": 0.86745514, "potencial": 1.167, "valor_estimado": 1.879775288, "risco": 1.69, "caixa": 0.061, "row": 25}, {"date": "2025-05-31", "cota": 0.91616055, "potencial": 0.991, "valor_estimado": 1.824075655, "risco": 1.61, "caixa": 0.094, "row": 26}, {"date": "2025-06-30", "cota": 0.905649, "potencial": 1.02, "valor_estimado": 1.82941098, "risco": 1.57, "caixa": 0.098, "row": 27}, {"date": "2025-07-31", "cota": 0.89903194, "potencial": 1.17, "valor_estimado": 1.95089931, "risco": 1.52, "caixa": 0.108, "row": 28}, {"date": "2025-08-31", "cota": 0.93558613, "potencial": 1.14, "valor_estimado": 2.002154318, "risco": 1.54, "caixa": 0.078, "row": 29}, {"date": "2025-09-30", "cota": 0.90742215, "potencial": 1.215, "valor_estimado": 2.009940062, "risco": 1.53, "caixa": 0.103, "row": 30}, {"date": "2025-10-31", "cota": 0.88103806, "potencial": 1.419, "valor_estimado": 2.131231067, "risco": 1.64, "caixa": 0.014, "row": 31}, {"date": "2025-11-30", "cota": 0.93122155, "potencial": 1.24, "valor_estimado": 2.085936272, "risco": 1.5, "caixa": 0.041, "row": 32}, {"date": "2025-12-31", "cota": 0.95889068, "potencial": 1.221, "valor_estimado": 2.1296962, "risco": 1.42, "caixa": 0.06, "row": 33}, {"date": "2026-01-31", "cota": 0.96997124, "potencial": 1.029, "valor_estimado": 1.968071646, "risco": 1.34, "caixa": 0.111, "row": 34}, {"date": "2026-02-28", "cota": 1.02592241, "potencial": 0.817, "valor_estimado": 1.864101019, "risco": 1.27, "caixa": 0.193, "row": 35}, {"date": "2026-03-31", "cota": 1.06083029, "potencial": 0.861, "valor_estimado": 1.97420517, "risco": 1.31, "caixa": 0.129, "row": 36}, {"date": "2026-04-30", "cota": 0.98756538, "potencial": 1.011, "valor_estimado": 1.985993979, "risco": 1.29, "caixa": 0.13, "row": 37}, {"date": "2026-05-31", "cota": 0.97811532, "potencial": 1.355, "valor_estimado": 2.303461579, "risco": 1.38, "caixa": 0.036, "row": 38}, {"date": "2026-06-30", "cota": 0.92053834, "potencial": 1.523, "valor_estimado": 2.322518232, "risco": 1.38, "caixa": 0.038, "row": 39}]},TYPE="potencial";
+const fmt=(v,n=2)=>v.toLocaleString('pt-BR',{minimumFractionDigits:n,maximumFractionDigits:n});
+const pct=(v,n=1)=>fmt(v*100,n)+'%';
+const full=s=>new Date(s+'T12:00:00').toLocaleDateString('pt-BR');
+const month=s=>new Date(s+'T12:00:00').toLocaleDateString('pt-BR',{month:'short',year:'2-digit'});
+const axisMonth=s=>new Date(s+'T12:00:00').toLocaleDateString('pt-BR',{month:'short'}).replace('.','')+'/'+s.slice(2,4);
+const main=document.getElementById('chart'),tip=document.getElementById('tip');
+const gold='#f1c232',goldText='#876407',black='#000000';
+function svg(tag,attrs,text){const el=document.createElementNS('http://www.w3.org/2000/svg',tag);Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));if(text!==undefined)el.textContent=text;return el}
+function table(headers,rows){return '<table><thead><tr>'+headers.map(x=>'<th>'+x+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+r.map(x=>'<td>'+x+'</td>').join('')+'</tr>').join('')+'</tbody></table>'}
+function describe(p){
+ return full(p.date)+' — '+(TYPE==='potencial'?
+  'Cota: '+fmt(p.cota,4)+' | Adicional estimado: '+fmt(p.cota*p.potencial,4)+' | Valor intrínseco estimado: '+fmt(p.valor_estimado,4)+' | Potencial: '+pct(p.potencial):
+  'Caixa: '+pct(p.caixa)+' | Índice interno de risco: '+fmt(p.risco));
+}
+function render(){
+ const recent=document.getElementById('recent').checked;
+ const points=recent?DATA.history.slice(-12):DATA.history;
+ document.getElementById('sub').textContent='Fechamentos mensais de '+month(points[0].date)+' a '+month(points.at(-1).date);
+ document.getElementById('legend').innerHTML=TYPE==='potencial'?
+  '<span><i class="key" style="--color:#000"></i>Cota Fortuna</span><span><i class="key" style="--color:#f1c232"></i>Adicional p/ valor intrínseco</span><span style="color:#777">Potencial de valorização (%) no topo</span>':
+  '<span><i class="key" style="--color:#000"></i>Caixa (%) · eixo esquerdo</span><span><i class="linekey"></i>Risco da carteira · eixo direito</span>';
+ main.innerHTML='';
+ const width=Math.max(280,main.clientWidth),height=Math.max(180,main.clientHeight),left=54,right=TYPE==='risco'?54:14,top=32,bottom=46;
+ const pw=width-left-right,ph=height-top-bottom,step=pw/points.length,bw=step*.72;
+ const x=i=>left+(i+.5)*step, y=v=>top+ph*(1-v/(TYPE==='potencial'?2.5:.3)),yr=v=>top+ph*(1-(v-1)/1.5);
+ const chart=svg('svg',{viewBox:'0 0 '+width+' '+height,role:'img','aria-label':TYPE==='potencial'?'Colunas empilhadas: cota em preto e adicional estimado em dourado. Potencial percentual no topo.':'Caixa em colunas pretas no eixo esquerdo e risco em linha dourada no eixo direito.'});main.append(chart);
+ const text=(xx,yy,label,attrs={})=>chart.append(svg('text',{x:xx,y:yy,'font-size':12,'text-anchor':'middle',fill:'#626262',...attrs},label));
+ const ticks=TYPE==='potencial'?5:6;
+ for(let t=0;t<=ticks;t++){
+  const yy=top+ph*(1-t/ticks);
+  chart.append(svg('line',{x1:left,y1:yy,x2:width-right,y2:yy,stroke:'#dedede','stroke-width':1}));
+  text(left-7,yy+4,TYPE==='potencial'?fmt(t*.5,1):pct(t*.05,0),{'text-anchor':'end'});
+  if(TYPE==='risco')text(width-right+7,yy+4,fmt(1+t*.25),{'text-anchor':'start'});
+ }
+ text(left,15,TYPE==='potencial'?'Cota':'Caixa (%)',{'text-anchor':'start',fill:'#333'});
+ if(TYPE==='risco')text(width-right,15,'Risco',{'text-anchor':'end',fill:'#333'});
+ chart.append(svg('line',{x1:left,y1:top,x2:left,y2:height-bottom,stroke:'#888','stroke-width':1}));
+ chart.append(svg('line',{x1:left,y1:height-bottom,x2:width-right,y2:height-bottom,stroke:'#888','stroke-width':1}));
+ if(TYPE==='risco')chart.append(svg('line',{x1:width-right,y1:top,x2:width-right,y2:height-bottom,stroke:'#888','stroke-width':1}));
+ const maxLabels=Math.max(2,Math.floor(pw/72)),dateIndices=new Set(Array.from({length:maxLabels},(_,i)=>Math.round(i*(points.length-1)/(maxLabels-1))));
+ const labelEvery=Math.max(1,Math.ceil(36/step));
+ const valueLabel=i=>i===points.length-1||(i%labelEvery===0&&(points.length-1-i)*step>=36);
+ points.forEach((p,i)=>{
+  const xx=x(i),base=height-bottom;
+  if(TYPE==='potencial'){
+   const current=y(p.cota),total=y(p.cota*(1+p.potencial));
+   chart.append(svg('rect',{x:xx-bw/2,y:current,width:bw,height:base-current,fill:black,'data-series':'cota','data-value':p.cota}));
+   chart.append(svg('rect',{x:xx-bw/2,y:total,width:bw,height:current-total,fill:gold,'data-series':'adicional','data-value':p.cota*p.potencial}));
+   if(valueLabel(i))text(xx,total-8,pct(p.potencial,0),{fill:'#777','font-weight':600,'text-anchor':'middle'});
+   if(bw>=25)text(xx,current+(base-current)*.55,fmt(p.cota,2),{fill:'#fff','font-size':12,'font-weight':600});
+  }else{
+   const yy=y(p.caixa);
+   chart.append(svg('rect',{x:xx-bw/2,y:yy,width:bw,height:base-yy,fill:black,'data-series':'caixa','data-value':p.caixa}));
+   if(valueLabel(i)){const inside=base-yy>=22;let labelY=inside?yy+(base-yy)/2+4:yy-7;if(inside&&Math.abs(labelY-(yr(p.risco)-12))<20)labelY=base-8;text(xx,labelY,pct(p.caixa),{fill:inside?'#fff':'#292929','font-size':12,'font-weight':600,'paint-order':'stroke',stroke:inside?'#000':'#fff','stroke-width':2,'text-anchor':'middle'});}
+  }
+  if(dateIndices.has(i))text(xx,height-15,axisMonth(p.date),{'text-anchor':i===0?'start':i===points.length-1?'end':'middle'});
+ });
+ if(TYPE==='risco'){
+  chart.append(svg('path',{d:points.map((p,i)=>(i?'L':'M')+x(i)+','+yr(p.risco)).join(' '),fill:'none',stroke:gold,'stroke-width':2.5}));
+  points.forEach((p,i)=>{
+   chart.append(svg('circle',{cx:x(i),cy:yr(p.risco),r:3,fill:gold,stroke:'#fff','stroke-width':.7,'data-series':'risco','data-value':p.risco}));
+   if(valueLabel(i))text(x(i),yr(p.risco)-12,fmt(p.risco),{fill:goldText,'font-weight':600,'paint-order':'stroke',stroke:'#fff','stroke-width':3,'stroke-linejoin':'round','text-anchor':'middle'});
+  });
+ }
+ points.forEach((p,i)=>{
+  const mark=svg('rect',{x:x(i)-step/2,y:top,width:step,height:ph,class:'hit',tabindex:0,role:'button','aria-label':describe(p)});
+  const show=()=>{tip.textContent=describe(p)};
+  mark.addEventListener('pointerenter',show);mark.addEventListener('focus',show);mark.addEventListener('click',show);chart.append(mark);
+ });
+ tip.textContent=describe(points.at(-1));
+ document.getElementById('values').innerHTML=TYPE==='potencial'?
+  table(['Mês','Cota','Adicional estimado','Valor intrínseco estimado','Potencial'],points.map(p=>[full(p.date),fmt(p.cota,4),fmt(p.cota*p.potencial,4),fmt(p.valor_estimado,4),pct(p.potencial)])):
+  table(['Mês','Caixa','Índice interno de risco'],points.map(p=>[full(p.date),pct(p.caixa),fmt(p.risco)]));
+ document.getElementById('note').textContent=TYPE==='potencial'?
+  'O adicional dourado é a cota multiplicada pelo potencial de valorização. O topo da coluna representa o valor intrínseco estimado pelos modelos da gestão, sem prazo definido para realização. Não é promessa de retorno.':
+  'Caixa e risco usam eixos diferentes. O risco é uma avaliação interna ponderada da carteira, não uma medida de volatilidade ou probabilidade de perda.';
+}
+document.querySelector('details').addEventListener('toggle',render);
+render();document.getElementById('recent').addEventListener('change',render);let timer;window.addEventListener('resize',()=>{clearTimeout(timer);timer=setTimeout(render,100)});
+</script>
+</html>
